@@ -47,6 +47,13 @@
       width: 122px;
     }
   </style>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({
+      token: "bf186db00f50462f80fa5cd2334bb49a"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
 </head>
 
 <body>
@@ -86,23 +93,94 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  
+ 
   <script>
     let form = document.querySelector('form');
+    
     form.addEventListener('submit', e => {
-      e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try{
+         e.preventDefault();
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }catch(err){
+        console.log("error caught");
+        console.log(err);
+      }
+     
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
-
+   
     // Start your code here
     // You may move this JS to another file if you wish
+    
+    
+    // Step 2
+
+      errorBtns[0].addEventListener("click", () => { console.log("Button Clicked!") });
+      errorBtns[1].addEventListener("click", () => { console.error("Logging an error!") });
+      errorBtns[2].addEventListener("click", () => { console.count("Counting Clicked!") });
+      errorBtns[3].addEventListener("click", () => { console.warn("Button Clicked!") });
+      errorBtns[4].addEventListener("click", () => { console.assert(1===0,"one doesnt equal 0") });
+      errorBtns[5].addEventListener("click", () => { console.clear("Button Clicked!") });
+      errorBtns[6].addEventListener("click", () => { console.dir(document.head) });
+      errorBtns[7].addEventListener("click", () => { console.dirxml(document) });
+      errorBtns[8].addEventListener("click", () => { console.group("grouping!") });
+      errorBtns[9].addEventListener("click", () => { console.groupEnd("grouping!") });
+      errorBtns[10].addEventListener("click", () => { console.table([{name:"Richard", age:"20"}]) });
+      errorBtns[11].addEventListener("click", () => { console.time("time!") });
+      errorBtns[12].addEventListener("click", () => { console.timeEnd("time!") });
+      errorBtns[13].addEventListener("click", () => { console.trace("Button Clicked!") });
+      errorBtns[14].addEventListener("click", () => { const breaking =0; breaking=1; });
+      // errorBtns[15].addEventListener("click", () => { console.log("Button Clicked!") });
+     
+
+      // Step 3: using try catch  finally
+
+      try {
+        const cantChange = 0;
+        cantChange = 1;
+      } catch (err) {
+        console.log("catching error " + err);
+      } finally {
+        console.log("finally error is resolved");
+      }
+    
+
+
+      //Step 4: creatign custom error and throwing it.
+      class RichardError extends Error{
+        constructor(message){
+          super(message);
+          this.name = "Richard found";
+        }
+      }
+      try{
+        throw new RichardError("HELLO!");
+      }catch(err){
+        console.log("caught error "+err );
+      }
+      
+      //Step 5, using window.oneerror
+      window.onerror = function (message, source, lineno, colno, error) { 
+        console.log("Error")
+        console.log("message: "+message)
+        console.log("source: "+source)
+        console.log("lineno: "+lineno)
+        console.log("colno: "+colno)
+        console.log("error: " + error)
+        return true;
+       };
+       //step 5 using trackJS
+      
+       
+      
   </script>
+  
 </body>
 
 </html>
